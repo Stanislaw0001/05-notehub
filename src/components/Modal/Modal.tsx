@@ -1,10 +1,16 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import type { MouseEvent, ReactNode } from 'react';
 import css from './Modal.module.css';
 
-export default function Modal({ onClose }) {
+interface ModalProps {
+    onClose: () => void;
+    children: ReactNode;
+}
+
+export default function Modal({ onClose, children }: ModalProps) {
     useEffect(() => {
-        function handleKeyDown(event) {
+        function handleKeyDown(event: KeyboardEvent) {
             if (event.key === 'Escape') {
                 onClose();
             }
@@ -21,8 +27,11 @@ export default function Modal({ onClose }) {
             aria-modal="true"
             onClick={onClose}
         >
-            <div className={css.modal} onClick={event => event.stopPropagation()}>
-                {/* */}
+            <div
+                className={css.modal}
+                onClick={(event: MouseEvent<HTMLDivElement>) => event.stopPropagation()}
+            >
+                {children}
             </div>
         </div>,
         document.body
