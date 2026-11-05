@@ -16,8 +16,15 @@ export default function Modal({ onClose, children }: ModalProps) {
             }
         }
 
+        const originalStyle = window.getComputedStyle(document.body).overflow;
+        document.body.style.overflow = 'hidden';
+
         document.addEventListener('keydown', handleKeyDown);
-        return () => document.removeEventListener('keydown', handleKeyDown);
+        
+        return () => {
+            document.body.style.overflow = originalStyle;
+            document.removeEventListener('keydown', handleKeyDown);
+        };
     }, [onClose]);
 
     return createPortal(
